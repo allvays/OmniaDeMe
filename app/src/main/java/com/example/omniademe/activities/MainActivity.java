@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.MenuItem;
 
@@ -42,10 +43,12 @@ public class MainActivity extends AppCompatActivity
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         Fragment editPersonFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (editPersonFragment == null){
-            editPersonFragment = new PersonEditorFragment();
+            editPersonFragment = PersonEditorFragment.newInstance();
             fragmentManager.beginTransaction().add(R.id.fragment_container, editPersonFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
     }
