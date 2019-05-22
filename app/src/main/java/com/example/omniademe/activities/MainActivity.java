@@ -1,15 +1,21 @@
 package com.example.omniademe.activities;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.omniademe.R;
+import com.example.omniademe.fragments.PersonEditorFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import android.view.MenuItem;
-import android.widget.TextView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-public class MainActivity extends AppCompatActivity {
+import android.view.MenuItem;
+
+public class MainActivity extends AppCompatActivity
+        implements PersonEditorFragment.OnFragmentInteractionListener {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,6 +40,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment editPersonFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (editPersonFragment == null){
+            editPersonFragment = new PersonEditorFragment();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, editPersonFragment)
+                    .commit();
+        }
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        /**Do something!!!!!!!!*/
+    }
 }
