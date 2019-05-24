@@ -1,10 +1,14 @@
 package com.example.omniademe.activities;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.omniademe.R;
+import com.example.omniademe.fragments.InterestingFactsFragment;
 import com.example.omniademe.fragments.PersonEditorFragment;
+import com.example.omniademe.model.Fact;
+import com.example.omniademe.model.Person;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,10 +17,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-        implements PersonEditorFragment.OnFragmentInteractionListener {
+        implements PersonEditorFragment.OnFragmentInteractionListener,
+        InterestingFactsFragment.OnFragmentInteractionListener {
+    private final String TAG = "MainActivity";
+
+    private Person mPerson;
+    private FragmentManager fragmentManager;
+    private Fragment editPersonFragment;
+    private Fragment interestingFactsFragment;
+    private Context mContext;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -25,11 +39,14 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    changeFragment(editPersonFragment, false);
                     return true;
                 case R.id.navigation_dashboard:
+                    changeFragment(interestingFactsFragment, false);
                     return true;
-                case R.id.navigation_notifications:
-                    return true;
+               /* case R.id.navigation_notifications:
+
+                    return true;*/
             }
             return false;
         }
@@ -41,20 +58,40 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mContext = this;
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
+        editPersonFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        interestingFactsFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        editPersonFragment = PersonEditorFragment.newInstance();
+        interestingFactsFragment = InterestingFactsFragment.newInstance();
 
-        Fragment editPersonFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (editPersonFragment == null){
-            editPersonFragment = PersonEditorFragment.newInstance();
-            fragmentManager.beginTransaction().add(R.id.fragment_container, editPersonFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
+        changeFragment(editPersonFragment,true);
+
+    }
+
+
+    private void changeFragment(Fragment fragment, boolean isFirstCall) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if (!isFirstCall){
+            fragmentTransaction.addToBackStack(null);
         }
+
+        fragmentTransaction.commit();
+        Log.d(TAG, "changeFragment: CREATED");
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Person person) {
+        mPerson = person;
+        /**Do something!!!!!!!!*/
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        /**Do something!!!!!!!!*/
+
     }
 }

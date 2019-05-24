@@ -17,6 +17,8 @@ public class Person {
     private UUID mUUID;
 
     public Person() {
+        mAge =0;
+        mHeight=0;
         mUUID = UUID.randomUUID();
 
 

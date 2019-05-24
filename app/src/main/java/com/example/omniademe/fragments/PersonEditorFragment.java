@@ -2,10 +2,10 @@ package com.example.omniademe.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.net.Uri;
-import android.nfc.Tag;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,7 +27,6 @@ import com.example.omniademe.R;
 import com.example.omniademe.model.Person;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 
 import java.util.Date;
@@ -43,27 +41,19 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class PersonEditorFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "PersonEditorFragment";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private Context mContext;
     private Person mPerson;
     private EditText mNameEditText;
     private EditText mBirthdayEditText;
     private EditText mHeightEditText;
     private RadioGroup mSexRadiogroup;
-    private RadioButton mMaleRB;
-    private RadioButton mFemaleRB;
     private Button mSaveButton;
     private SeekBar mHeightSeekBar;
-    private Context mContext;
+    private boolean mIsSexSet = false;
     private TextView mHelpingHandSeekBar;
+    private TextView mGenderTextView;
 
 
     private OnFragmentInteractionListener mListener;
@@ -85,25 +75,26 @@ public class PersonEditorFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mContext = getContext();
         super.onCreate(savedInstanceState);
+        mContext = getContext();
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
         mPerson = new Person();
+        Log.d(TAG, "onCreate: success");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_person_editor, container, false);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_person_editor, container, false);
 
         findViews(v);
         setListeners();
-
+        Log.d(TAG, "onCreateView: CREATED VIEW");
         return v;
     }
 
@@ -112,11 +103,11 @@ public class PersonEditorFragment extends Fragment {
         mBirthdayEditText = v.findViewById(R.id.birthdayEditText);
         mHeightEditText = v.findViewById(R.id.heightEditText);
         mSexRadiogroup = v.findViewById(R.id.sexRadioGroup);
-        mMaleRB = v.findViewById(R.id.maleRB);
-        mFemaleRB = v.findViewById(R.id.femaleRB);
         mSaveButton = v.findViewById(R.id.saveChangesButton);
-        mHeightSeekBar  = v.findViewById(R.id.heightSeekBar);
+        mHeightSeekBar = v.findViewById(R.id.heightSeekBar);
         mHelpingHandSeekBar = v.findViewById(R.id.helpingHandTextView);
+        mGenderTextView = v.findViewById(R.id.gender_text_view);
+
 
     }
 
@@ -171,11 +162,15 @@ public class PersonEditorFragment extends Fragment {
         mSexRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                mIsSexSet = true;
+                mSexRadiogroup.setBackgroundColor(Color.TRANSPARENT);
                 switch (i) {
                     case R.id.maleRB:
                         mPerson.setMale(true);
+                        break;
                     case R.id.femaleRB:
                         mPerson.setMale(false);
+                        break;
                 }
             }
         });
@@ -186,7 +181,6 @@ public class PersonEditorFragment extends Fragment {
         mHeightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
                 mHelpingHandSeekBar.setText(String.valueOf(mHeightSeekBar.getProgress()).concat(" cm"));
             }
 
@@ -199,20 +193,75 @@ public class PersonEditorFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
                 mHeightEditText.setText(String.valueOf(mHeightSeekBar.getProgress()).concat(" cm"));
+                mPerson.setHeight(mHeightSeekBar.getProgress());
+                mHeightEditText.setBackgroundColor(Color.TRANSPARENT);
                 mHeightEditText.setVisibility(View.VISIBLE);
                 mHeightSeekBar.setVisibility(View.INVISIBLE);
                 mHelpingHandSeekBar.setVisibility(View.INVISIBLE);
             }
         });
 
+        /**
+        * Realizing button
+        * */
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                if ((mNameEditText.getText().length() != 0) && (mBirthdayEditText.getText().length() != 0)
+                        && (mHeightEditText.getText().length() != 0) && mIsSexSet) {
+                    mNameEditText.setEnabled(false);
+                    mNameEditText.setCursorVisible(false);
+                    mNameEditText.setBackgroundColor(Color.TRANSPARENT);
+                    mNameEditText.setTextColor(Color.BLACK);
+                    mNameEditText.setKeyListener(null);
 
+                    mBirthdayEditText.setEnabled(false);
+                    mBirthdayEditText.setCursorVisible(false);
+                    mBirthdayEditText.setBackgroundColor(Color.TRANSPARENT);
+                    mBirthdayEditText.setKeyListener(null);
+                    mBirthdayEditText.setTextColor(Color.BLACK);
+
+                    mHeightEditText.setEnabled(false);
+                    mHeightEditText.setCursorVisible(false);
+                    mHeightEditText.setBackgroundColor(Color.TRANSPARENT);
+                    mHeightEditText.setKeyListener(null);
+                    mHeightEditText.setTextColor(Color.BLACK);
+
+                    mSexRadiogroup.setVisibility(View.INVISIBLE);
+                    mGenderTextView.setVisibility(View.VISIBLE);
+                    mGenderTextView.setTextColor(Color.BLACK);
+                    Log.d(TAG, String.valueOf(mPerson.getIsMale()));
+
+                    if (mPerson.getIsMale()) {
+                        mGenderTextView.setText("Male");
+                    } else {
+                        mGenderTextView.setText("Female");
+                    }
+
+
+                } else {
+                    if ((mNameEditText.getText().length() == 0)) {
+                        mNameEditText.setBackgroundColor(Color.rgb(247, 153, 153));
+                    }
+                    if ((mBirthdayEditText.getText().length() == 0)) {
+                        mBirthdayEditText.setBackgroundColor(Color.rgb(247, 153, 153));
+                    }
+                    if ((mHeightEditText.getText().length() == 0)) {
+                        mHeightEditText.setBackgroundColor(Color.rgb(247, 153, 153));
+                    }
+                    if (!mIsSexSet) {
+                        mSexRadiogroup.setBackgroundColor(Color.rgb(247, 153, 153));
+                    }
+                }
+                if (mListener != null) {
+                    mListener.onFragmentInteraction(mPerson);
+                }
             }
         });
+
     }
+
 
     private void getBirthday() {
         final DateTime today = new DateTime(new Date());
@@ -228,7 +277,8 @@ public class PersonEditorFragment extends Fragment {
                      * */
                     DateTime then = new DateTime(year, month, day, 0, 0, 0, 0);
                     int mHowmanyDaysILived = Days.daysBetween(then, today).getDays();
-                    if (mHowmanyDaysILived > 0) {
+                    Log.d(TAG, "onDateSet: " + mHowmanyDaysILived);
+                    if (mHowmanyDaysILived >= 1095) {
                         mPerson.setAge(mHowmanyDaysILived / 365);
 
                         /**
@@ -258,9 +308,16 @@ public class PersonEditorFragment extends Fragment {
 
                             }
                         }
+                        mBirthdayEditText.setBackgroundColor(Color.TRANSPARENT);
                     } else {
-                        Toast.makeText(mContext, "Don't try to go into the future", Toast.LENGTH_SHORT).show();
-                        mBirthdayEditText.setText(null);
+                        if (mHowmanyDaysILived > 0) {
+                            Toast.makeText(mContext, "You can't be younger 3 y.o.", Toast.LENGTH_SHORT).show();
+                            mBirthdayEditText.setText(null);
+                        } else {
+                            Toast.makeText(mContext, "Don't try to go into the future", Toast.LENGTH_SHORT).show();
+                            mBirthdayEditText.setText(null);
+                        }
+
                     }
 
 
@@ -274,29 +331,6 @@ public class PersonEditorFragment extends Fragment {
 
     }
 
-    /**
-     * public void setButtonListener(){
-     * mSaveButton.setOnClickListener(new View.OnClickListener() {
-     *
-     * @Override public void onClick(View view) {
-     * mNameEditText.getText();
-     * mHeightEditText.getText();
-     * <p>
-     * <p>
-     * <p>
-     * }
-     * });
-     * }
-     */
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onSaveButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -306,12 +340,14 @@ public class PersonEditorFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        Log.d(TAG, "onAttach: ATTACHED");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        Log.d(TAG, "onDetach: DETACHED");
     }
 
     /**
@@ -326,6 +362,18 @@ public class PersonEditorFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Person person);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: RESUMED");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: PAUSED");
     }
 }
