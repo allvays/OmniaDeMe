@@ -118,7 +118,9 @@ public class InterestingFactsFragment extends Fragment {
             Fact fact = mFacts.get(position);
             holder.mTitleText.setText(fact.getFactTitle());
             holder.mDescription.setText(fact.getDescription());
-            //holder.mImageView.setImageResource(fact.getFactPicResId());
+
+                holder.mImageView.setImageResource(fact.getFactPicResId());
+
             holder.mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

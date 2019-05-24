@@ -7,7 +7,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fact_title">Fact title</string>
-    <string name="ipsum">Praesent sem diam, ultricies a ligula vitae, venenatis laoreet sapien. Nam nec urna id dui egestas interdum vel fermentum felis.
+    <string name="ipsum_long">Praesent sem diam, ultricies a ligula vitae, venenatis laoreet sapien. Nam nec urna id dui egestas interdum vel fermentum felis.
         Pellentesque elementum dapibus nulla ut interdum. Suspendisse hendrerit a massa vel pulvinar. Donec purus risus, molestie eget nisl sit amet, bibendum pretium purus.
         Aenean at lacus ac odio blandit viverra et laoreet nulla. Morbi efficitur purus sit amet urna finibus, at porta tellus sollicitudin. Proin ut tortor sit amet dui ullamcorper
         luctus. Sed aliquam cursus dolor, ornare aliquam massa eleifend quis. Proin non dignissim orci. In mollis maximus nisl, ut cursus nibh efficitur sed. In mattis efficitur
@@ -24,4 +24,13 @@
         Praesent tristique accumsan lorem sed tempus. Nunc porta dignissim ex, sed pharetra velit rutrum vel. Mauris vitae sodales tortor. Praesent ac nibh congue, ultrices sem nec,
         ornare dolor. Quisque aliquet leo et elit tincidunt, quis faucibus metus pretium. Nulla viverra luctus vehicula. Maecenas dapibus hendrerit felis, non pharetra arcu
         scelerisque id. Nunc vitae arcu at massa porta dignissim dignissim a lacus. Vivamus gravida felis sed urna sollicitudin aliquet. Nulla facilisi.</string>
+    <string name="ipsum_short">Praesent sem diam, ultricies a ligula vitae, venenatis laoreet sapien. Nam nec urna id dui egestas interdum vel fermentum felis.
+        Pellentesque elementum dapibus nulla ut interdum. Suspendisse hendrerit a massa vel pulvinar.</string>
+
+    <string name="hair_fact_title">Hair through life</string>
+    <string name="hair_fact_description">In your entire life your hair has grown </string>
+    <string name="nails_fact_title">How long would my nails be?</string>
+    <string name="nails_fact_description">Nails on the hands would grow</string>
+    <string name="toes_fact_title">And on my feet?</string>
+    <string name="toes_fact_description">You\'ve already grown</string>
 </resources>

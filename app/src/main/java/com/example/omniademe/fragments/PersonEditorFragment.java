@@ -254,6 +254,7 @@ public class PersonEditorFragment extends Fragment {
                         mSexRadiogroup.setBackgroundColor(Color.rgb(247, 153, 153));
                     }
                 }
+
                 if (mListener != null) {
                     mListener.onFragmentInteraction(mPerson);
                 }
@@ -279,7 +280,7 @@ public class PersonEditorFragment extends Fragment {
                     int mHowmanyDaysILived = Days.daysBetween(then, today).getDays();
                     Log.d(TAG, "onDateSet: " + mHowmanyDaysILived);
                     if (mHowmanyDaysILived >= 1095) {
-                        mPerson.setAge(mHowmanyDaysILived / 365);
+                        mPerson.setAgeInDays(mHowmanyDaysILived);
 
                         /**
                          * Setting and formatting text in Edit Text Field

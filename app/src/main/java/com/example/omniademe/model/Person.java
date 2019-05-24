@@ -1,23 +1,18 @@
 package com.example.omniademe.model;
 
-import java.util.Date;
 import java.util.UUID;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 
 
 public class Person {
     private String mName;
-    private int mAge;
+    private int mAgeInDays;
     private int mHeight;
     private boolean mIsMale;
     private int mImageResID;
     private UUID mUUID;
 
     public Person() {
-        mAge =0;
+        mAgeInDays =0;
         mHeight=0;
         mUUID = UUID.randomUUID();
 
@@ -32,8 +27,8 @@ public class Person {
         mName = name;
     }
 
-    public void setAge(int age) {
-        mAge = age;
+    public void setAgeInDays(int ageInDays) {
+        mAgeInDays = ageInDays;
     }
 
     public void setHeight(int height) {
@@ -56,8 +51,8 @@ public class Person {
         return mName;
     }
 
-    public int getAge() {
-        return mAge;
+    public int getAgeInDays() {
+        return mAgeInDays;
     }
 
     public int getHeight() {

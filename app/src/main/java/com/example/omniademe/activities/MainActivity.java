@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
         InterestingFactsFragment.OnFragmentInteractionListener {
     private final String TAG = "MainActivity";
 
-    private Person mPerson;
+    private  static Person mPerson;
     private FragmentManager fragmentManager;
     private Fragment editPersonFragment;
     private Fragment interestingFactsFragment;
@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "changeFragment: CREATED");
     }
 
+    public Person getPerson() {
+        return mPerson;
+    }
 
     @Override
     public void onFragmentInteraction(Person person) {
