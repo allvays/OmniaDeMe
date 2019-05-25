@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private Fragment editPersonFragment;
     private Fragment interestingFactsFragment;
-    private Context mContext;
+    private Context mContext = MainActivity.this;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,8 +42,14 @@ public class MainActivity extends AppCompatActivity
                     changeFragment(editPersonFragment, false);
                     return true;
                 case R.id.navigation_dashboard:
-                    changeFragment(interestingFactsFragment, false);
-                    return true;
+                    if (mPerson!=null){
+                        changeFragment(interestingFactsFragment, false);
+                        return true;
+                    }else{
+                        Toast.makeText(mContext,"Please fill fields about you",Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
                /* case R.id.navigation_notifications:
 
                     return true;*/

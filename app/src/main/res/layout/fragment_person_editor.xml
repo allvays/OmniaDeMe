@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="8dp"
-        android:text="Next"
+        android:text="Save"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent" />
 
