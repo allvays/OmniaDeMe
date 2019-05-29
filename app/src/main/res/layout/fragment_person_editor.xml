@@ -76,14 +76,16 @@
 
     <ImageView
         android:id="@+id/setPicImage"
-        android:layout_width="133dp"
-        android:layout_height="135dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:src="@drawable/person"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add"
-        tools:src="@tools:sample/avatars[5]" />
+        app:layout_constraintTop_toTopOf="parent" />
+        <!--app:srcCompat="@android:drawable/upl"-->
+
+
 
         <RadioGroup
             android:id="@+id/sexRadioGroup"

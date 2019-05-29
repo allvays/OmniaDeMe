@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
         InterestingFactsFragment.OnFragmentInteractionListener {
     private final String TAG = "MainActivity";
 
-    private  static Person mPerson;
+    private static Person mPerson;
     private FragmentManager fragmentManager;
     private Fragment editPersonFragment;
     private Fragment interestingFactsFragment;
@@ -42,11 +42,11 @@ public class MainActivity extends AppCompatActivity
                     changeFragment(editPersonFragment, false);
                     return true;
                 case R.id.navigation_dashboard:
-                    if (mPerson!=null){
+                    if (mPerson != null) {
                         changeFragment(interestingFactsFragment, false);
                         return true;
-                    }else{
-                        Toast.makeText(mContext,"Please fill fields about you",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "Please fill fields about you", Toast.LENGTH_SHORT).show();
                         return false;
                     }
 
@@ -66,14 +66,18 @@ public class MainActivity extends AppCompatActivity
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mContext = this;
 
+
+        fillWithFragment();
+        changeFragment(editPersonFragment, true);
+
+    }
+
+    private void fillWithFragment() {
         fragmentManager = getSupportFragmentManager();
         editPersonFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         interestingFactsFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         editPersonFragment = PersonEditorFragment.newInstance();
         interestingFactsFragment = InterestingFactsFragment.newInstance();
-
-        changeFragment(editPersonFragment,true);
-
     }
 
 
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        if (!isFirstCall){
+        if (!isFirstCall) {
             fragmentTransaction.addToBackStack(null);
         }
 

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class PersonEditorFragment extends Fragment {
     private boolean mIsSexSet = false;
     private TextView mHelpingHandSeekBar;
     private TextView mGenderTextView;
+    private ImageView mPersonIcon;
 
 
     private OnFragmentInteractionListener mListener;
@@ -107,6 +109,7 @@ public class PersonEditorFragment extends Fragment {
         mHeightSeekBar = v.findViewById(R.id.heightSeekBar);
         mHelpingHandSeekBar = v.findViewById(R.id.helpingHandTextView);
         mGenderTextView = v.findViewById(R.id.gender_text_view);
+        mPersonIcon = v.findViewById(R.id.setPicImage);
 
 
     }
@@ -175,6 +178,8 @@ public class PersonEditorFragment extends Fragment {
             }
         });
 
+
+
         /**
          * Realizing seekbar
          * */
@@ -201,9 +206,16 @@ public class PersonEditorFragment extends Fragment {
             }
         });
 
+        mPersonIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"Can't do it now",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         /**
-        * Realizing button
-        * */
+         * Realizing button
+         * */
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -239,8 +251,12 @@ public class PersonEditorFragment extends Fragment {
                         mGenderTextView.setText("Female");
                     }
 
+                    if (mListener != null) {
+                        mListener.onFragmentInteraction(mPerson);
+                    }
 
                 } else {
+                    Toast.makeText(getContext(), R.string.empty_person_warning_toast, Toast.LENGTH_SHORT).show();
                     if ((mNameEditText.getText().length() == 0)) {
                         mNameEditText.setBackgroundColor(Color.rgb(247, 153, 153));
                     }
@@ -253,10 +269,6 @@ public class PersonEditorFragment extends Fragment {
                     if (!mIsSexSet) {
                         mSexRadiogroup.setBackgroundColor(Color.rgb(247, 153, 153));
                     }
-                }
-
-                if (mListener != null) {
-                    mListener.onFragmentInteraction(mPerson);
                 }
             }
         });

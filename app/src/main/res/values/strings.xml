@@ -33,4 +33,5 @@
     <string name="nails_fact_description">Nails on the hands would grow</string>
     <string name="toes_fact_title">And on my feet?</string>
     <string name="toes_fact_description">You\'ve already grown</string>
+    <string name="empty_person_warning_toast">Please fill marked fields</string>
 </resources>
