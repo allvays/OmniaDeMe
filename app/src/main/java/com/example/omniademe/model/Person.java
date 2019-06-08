@@ -4,20 +4,27 @@ import java.util.UUID;
 
 
 public class Person {
-    private String mName;
-    private int mAgeInDays;
-    private int mHeight;
-    private boolean mIsMale;
-    private int mImageResID;
-    private UUID mUUID;
+    private static String mName;
+    private static int mAgeInDays =0;
+    private static int mHeight = 0;
+    private static boolean mIsMale;
+    private static int mImageResID;
 
-    public Person() {
-        mAgeInDays =0;
-        mHeight=0;
-        mUUID = UUID.randomUUID();
+    /**
+     * Close access to the constructor
+     */
+    private Person() {
+    }
 
+    private static class PersonSingletonHolder {
+        private static final Person HOLDER_INSTANCE = new Person();
 
     }
+
+    public static Person getPerson() {
+        return PersonSingletonHolder.HOLDER_INSTANCE;
+    }
+
 
     /**
      * Setters
@@ -65,9 +72,5 @@ public class Person {
 
     public int getImageResID() {
         return mImageResID;
-    }
-
-    public UUID getUUID() {
-        return mUUID;
     }
 }

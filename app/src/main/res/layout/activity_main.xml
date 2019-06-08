@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
+    <!--TODO: Add menu on ActionBar-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -20,6 +21,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"

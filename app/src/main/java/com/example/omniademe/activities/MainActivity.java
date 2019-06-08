@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.example.omniademe.R;
 import com.example.omniademe.fragments.InterestingFactsFragment;
 import com.example.omniademe.fragments.PersonEditorFragment;
-import com.example.omniademe.model.Fact;
 import com.example.omniademe.model.Person;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -42,6 +41,8 @@ public class MainActivity extends AppCompatActivity
                     changeFragment(editPersonFragment, false);
                     return true;
                 case R.id.navigation_dashboard:
+                    // TODO: ineffective, change statement or delete it. Because mPerson on the first call
+                    //  is not null anymore.
                     if (mPerson != null) {
                         changeFragment(interestingFactsFragment, false);
                         return true;
@@ -67,16 +68,16 @@ public class MainActivity extends AppCompatActivity
         mContext = this;
 
 
-        fillWithFragment();
+        engageFragments();
         changeFragment(editPersonFragment, true);
 
     }
 
-    private void fillWithFragment() {
+    private void engageFragments() {
         fragmentManager = getSupportFragmentManager();
         editPersonFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        interestingFactsFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         editPersonFragment = PersonEditorFragment.newInstance();
+        interestingFactsFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         interestingFactsFragment = InterestingFactsFragment.newInstance();
     }
 

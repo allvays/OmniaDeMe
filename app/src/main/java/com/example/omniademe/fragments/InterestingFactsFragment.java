@@ -32,7 +32,6 @@ public class InterestingFactsFragment extends Fragment {
     private List<Fact> mFacts;
 
 
-    // TODO: Rename and change types and number of parameters
     public static InterestingFactsFragment newInstance() {
         InterestingFactsFragment fragment = new InterestingFactsFragment();
         Bundle args = new Bundle();
@@ -62,7 +61,6 @@ public class InterestingFactsFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -88,7 +86,6 @@ public class InterestingFactsFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

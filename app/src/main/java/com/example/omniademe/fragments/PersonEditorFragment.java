@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -31,6 +32,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -57,6 +59,8 @@ public class PersonEditorFragment extends Fragment {
     private TextView mGenderTextView;
     private ImageView mPersonIcon;
 
+    private Handler mHandler = new Handler();
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,8 +68,7 @@ public class PersonEditorFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
+    
     public static PersonEditorFragment newInstance() {
         PersonEditorFragment fragment = new PersonEditorFragment();
         Bundle args = new Bundle();
@@ -81,7 +84,7 @@ public class PersonEditorFragment extends Fragment {
         mContext = getContext();
         if (getArguments() != null) {
         }
-        mPerson = new Person();
+        mPerson = Person.getPerson();
         Log.d(TAG, "onCreate: success");
     }
 
@@ -179,7 +182,6 @@ public class PersonEditorFragment extends Fragment {
         });
 
 
-
         /**
          * Realizing seekbar
          * */
@@ -206,11 +208,18 @@ public class PersonEditorFragment extends Fragment {
             }
         });
 
+
+        /**
+         * Trying to set image from gallery in new thread
+         * */
         mPersonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Can't do it now",Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getContext(), "Can't do it now", Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
         /**
@@ -374,7 +383,6 @@ public class PersonEditorFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Person person);
     }
 
