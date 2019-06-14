@@ -3,9 +3,6 @@ package com.example.omniademe.model;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ImageView;
-
-import com.example.omniademe.activities.MainActivity;
 
 import java.util.UUID;
 
@@ -13,25 +10,27 @@ public class Fact {
     private UUID mUUID;
     private String mFactTitle;
     private String mDescription;
+    private String mFactPicUrl;
     private int mFactPicResId;
 
-    public Fact(Context context, int title, int description, int imageResId, String TAG) {
+    public Fact(Context context, int title, int description, int factPicResId, String TAG) {
         mUUID = UUID.randomUUID();
-        int days = new MainActivity().getPerson().getAgeInDays();
-        Log.d(TAG, "Fact: days is"+days);
-        mFactPicResId = imageResId;
+        int days = Person.getPerson().getAgeInDays();
+        Log.d(TAG, "Fact: days is" + days);
+        //mFactPicUrl = uri;
+        mFactPicResId = factPicResId;
         mFactTitle = context.getString(title);
-        switch (TAG){
+        switch (TAG) {
             case "hair":
-                mDescription = context.getString(description).concat(" ").concat(String.valueOf(Double.valueOf(days*0.033).intValue())
+                mDescription = context.getString(description).concat(" ").concat(String.valueOf(Double.valueOf(days * 0.033).intValue())
                         .concat(" cm"));
                 break;
             case "nails":
-                mDescription = context.getString(description).concat(" ").concat(String.valueOf(Double.valueOf(days*0.043).intValue())
+                mDescription = context.getString(description).concat(" ").concat(String.valueOf(Double.valueOf(days * 0.043).intValue())
                         .concat(" cm"));
                 break;
             case "toes":
-                mDescription = context.getString(description).concat(" ").concat(String.valueOf(Double.valueOf(days*0.0036).intValue())
+                mDescription = context.getString(description).concat(" ").concat(String.valueOf(Double.valueOf(days * 0.0036).intValue())
                         .concat(" cm"));
                 break;
         }
@@ -54,7 +53,11 @@ public class Fact {
         return mDescription;
     }
 
-    public int getFactPicResId() {
+    public String getFactPicUrl() {
+        return mFactPicUrl;
+    }
+
+    public int getFactResId() {
         return mFactPicResId;
     }
 }

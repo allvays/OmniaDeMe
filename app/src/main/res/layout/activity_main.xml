@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <!--TODO: Add menu on ActionBar-->
+    <!--TODO: Add menu on ActionBar. And it goes  after save button-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"

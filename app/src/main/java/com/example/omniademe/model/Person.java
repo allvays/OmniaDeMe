@@ -1,8 +1,5 @@
 package com.example.omniademe.model;
 
-import java.util.UUID;
-
-
 public class Person {
     private static String mName;
     private static int mAgeInDays =0;

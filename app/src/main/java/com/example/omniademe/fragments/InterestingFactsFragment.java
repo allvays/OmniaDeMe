@@ -1,5 +1,6 @@
 package com.example.omniademe.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +20,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.omniademe.R;
-import com.example.omniademe.activities.MainActivity;
 import com.example.omniademe.model.Fact;
 import com.example.omniademe.model.FactList;
+
 
 import java.util.List;
 
 
+
+
 public class InterestingFactsFragment extends Fragment {
+    private final String TAG = "InterestingFactsFragment";
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private FactAdapter mFactAdapter;
@@ -34,39 +39,10 @@ public class InterestingFactsFragment extends Fragment {
 
     public static InterestingFactsFragment newInstance() {
         InterestingFactsFragment fragment = new InterestingFactsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mFacts = FactList.getInstance(getContext()).getFacts();
-        mFactAdapter = new FactAdapter(mFacts, getContext());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_interesting_facts, container, false);
-        mRecyclerView = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-
-        mRecyclerView.setAdapter(mFactAdapter);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        return view;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
+    @SuppressLint("LongLogTag")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -74,9 +50,37 @@ public class InterestingFactsFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSaveButtonPersonFragmentInteractionListener");
         }
+        Log.d(TAG, "Interesting fact fragment onAttach: ATTACHED");
     }
+
+    @SuppressLint("LongLogTag")
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+
+    @SuppressLint("LongLogTag")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_interesting_facts, container, false);
+        mRecyclerView = view.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        mFacts = FactList.getInstance(getContext()).getFacts();
+        mFactAdapter = new FactAdapter(mFacts, getContext());
+
+        mRecyclerView.setAdapter(mFactAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        Log.d(TAG, "onCreateView: CALLED");
+        return view;
+    }
+
 
     @Override
     public void onDetach() {
@@ -115,8 +119,8 @@ public class InterestingFactsFragment extends Fragment {
             Fact fact = mFacts.get(position);
             holder.mTitleText.setText(fact.getFactTitle());
             holder.mDescription.setText(fact.getDescription());
-
-                holder.mImageView.setImageResource(fact.getFactPicResId());
+            holder.mImageView.setImageResource(fact.getFactResId());
+           // Picasso.with(mContext).load(fact.getFactPicUrl()).into(holder.mImageView);
 
             holder.mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override

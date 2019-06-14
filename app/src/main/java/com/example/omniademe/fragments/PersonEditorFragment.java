@@ -26,19 +26,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.omniademe.R;
+import com.example.omniademe.activities.MainActivity;
 import com.example.omniademe.model.Person;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PersonEditorFragment.OnFragmentInteractionListener} interface
+ * {@link OnSaveButtonPersonFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PersonEditorFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -58,18 +61,21 @@ public class PersonEditorFragment extends Fragment {
     private TextView mHelpingHandSeekBar;
     private TextView mGenderTextView;
     private ImageView mPersonIcon;
+    private int mFemPicIdCounter = 0;
+    private int mMalePicIdCounter = 0;
 
     private Handler mHandler = new Handler();
 
 
-    private OnFragmentInteractionListener mListener;
+    private OnSaveButtonPersonFragmentInteractionListener mSaveButtonListener;
 
     public PersonEditorFragment() {
         // Required empty public constructor
     }
 
-    
+
     public static PersonEditorFragment newInstance() {
+        Log.d(TAG, "newInstance: CALLED");
         PersonEditorFragment fragment = new PersonEditorFragment();
         Bundle args = new Bundle();
         //args.putString(ARG_PARAM1, param1);
@@ -85,7 +91,6 @@ public class PersonEditorFragment extends Fragment {
         if (getArguments() != null) {
         }
         mPerson = Person.getPerson();
-        Log.d(TAG, "onCreate: success");
     }
 
     @Override
@@ -99,7 +104,6 @@ public class PersonEditorFragment extends Fragment {
 
         findViews(v);
         setListeners();
-        Log.d(TAG, "onCreateView: CREATED VIEW");
         return v;
     }
 
@@ -173,9 +177,11 @@ public class PersonEditorFragment extends Fragment {
                 switch (i) {
                     case R.id.maleRB:
                         mPerson.setMale(true);
+                        setPic(getNewProfilePic(mPerson.getIsMale()));
                         break;
                     case R.id.femaleRB:
                         mPerson.setMale(false);
+                        setPic(getNewProfilePic(mPerson.getIsMale()));
                         break;
                 }
             }
@@ -183,7 +189,7 @@ public class PersonEditorFragment extends Fragment {
 
 
         /**
-         * Realizing seekbar
+         * Realizing seek_bar
          * */
         mHeightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -212,6 +218,7 @@ public class PersonEditorFragment extends Fragment {
         /**
          * Trying to set image from gallery in new thread
          * */
+        //TODO : Realize image download from Gallery
         mPersonIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -231,28 +238,6 @@ public class PersonEditorFragment extends Fragment {
 
                 if ((mNameEditText.getText().length() != 0) && (mBirthdayEditText.getText().length() != 0)
                         && (mHeightEditText.getText().length() != 0) && mIsSexSet) {
-                    mNameEditText.setEnabled(false);
-                    mNameEditText.setCursorVisible(false);
-                    mNameEditText.setBackgroundColor(Color.TRANSPARENT);
-                    mNameEditText.setTextColor(Color.BLACK);
-                    mNameEditText.setKeyListener(null);
-
-                    mBirthdayEditText.setEnabled(false);
-                    mBirthdayEditText.setCursorVisible(false);
-                    mBirthdayEditText.setBackgroundColor(Color.TRANSPARENT);
-                    mBirthdayEditText.setKeyListener(null);
-                    mBirthdayEditText.setTextColor(Color.BLACK);
-
-                    mHeightEditText.setEnabled(false);
-                    mHeightEditText.setCursorVisible(false);
-                    mHeightEditText.setBackgroundColor(Color.TRANSPARENT);
-                    mHeightEditText.setKeyListener(null);
-                    mHeightEditText.setTextColor(Color.BLACK);
-
-                    mSexRadiogroup.setVisibility(View.INVISIBLE);
-                    mGenderTextView.setVisibility(View.VISIBLE);
-                    mGenderTextView.setTextColor(Color.BLACK);
-                    Log.d(TAG, String.valueOf(mPerson.getIsMale()));
 
                     if (mPerson.getIsMale()) {
                         mGenderTextView.setText("Male");
@@ -260,10 +245,9 @@ public class PersonEditorFragment extends Fragment {
                         mGenderTextView.setText("Female");
                     }
 
-                    if (mListener != null) {
-                        mListener.onFragmentInteraction(mPerson);
+                    if (mSaveButtonListener != null) {
+                        mSaveButtonListener.onSaveButtonPersonEditorFragmentInteraction(mPerson);
                     }
-
                 } else {
                     Toast.makeText(getContext(), R.string.empty_person_warning_toast, Toast.LENGTH_SHORT).show();
                     if ((mNameEditText.getText().length() == 0)) {
@@ -279,6 +263,7 @@ public class PersonEditorFragment extends Fragment {
                         mSexRadiogroup.setBackgroundColor(Color.rgb(247, 153, 153));
                     }
                 }
+
             }
         });
 
@@ -293,7 +278,7 @@ public class PersonEditorFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                if (getView().isShown()) {
+                if (Objects.requireNonNull(getView()).isShown()) {
                     /**
                      * Calculating years between two dates and setting age
                      * */
@@ -353,23 +338,139 @@ public class PersonEditorFragment extends Fragment {
 
     }
 
+    private int getNewProfilePic(boolean isMale) {
+        List<Integer> femDrawables = new ArrayList<>(10);
+        femDrawables.add(R.drawable.ic_fem_person_1);
+        femDrawables.add(R.drawable.ic_fem_person_2);
+        femDrawables.add(R.drawable.ic_fem_person_3);
+        femDrawables.add(R.drawable.ic_fem_person_4);
+        femDrawables.add(R.drawable.ic_fem_person_5);
+        femDrawables.add(R.drawable.ic_fem_person_6);
+        femDrawables.add(R.drawable.ic_fem_person_7);
+        femDrawables.add(R.drawable.ic_fem_person_8);
+        femDrawables.add(R.drawable.ic_fem_person_9);
+        femDrawables.add(R.drawable.ic_fem_person_10);
+        List<Integer> maleDrawables = new ArrayList<>(14);
+        maleDrawables.add(R.drawable.ic_male_person_1);
+        maleDrawables.add(R.drawable.ic_male_person_2);
+        maleDrawables.add(R.drawable.ic_male_person_3);
+        maleDrawables.add(R.drawable.ic_male_person_4);
+        maleDrawables.add(R.drawable.ic_male_person_5);
+        maleDrawables.add(R.drawable.ic_male_person_6);
+        maleDrawables.add(R.drawable.ic_male_person_7);
+        maleDrawables.add(R.drawable.ic_male_person_8);
+        maleDrawables.add(R.drawable.ic_male_person_9);
+        maleDrawables.add(R.drawable.ic_male_person_10);
+        maleDrawables.add(R.drawable.ic_male_person_11);
+        maleDrawables.add(R.drawable.ic_male_person_12);
+        maleDrawables.add(R.drawable.ic_male_person_13);
+        maleDrawables.add(R.drawable.ic_male_person_14);
+        if (isMale) {
+            switch (mMalePicIdCounter) {
+                case 0:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(0);
+                case 1:
+                    mMalePicIdCounter++;
+
+                    return maleDrawables.get(1);
+                case 2:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(2);
+                case 3:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(3);
+                case 4:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(4);
+                case 5:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(5);
+                case 6:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(6);
+                case 7:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(7);
+                case 8:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(8);
+                case 9:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(9);
+                case 10:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(10);
+                case 11:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(11);
+                case 12:
+                    mMalePicIdCounter++;
+                    return maleDrawables.get(12);
+                case 13:
+                    mMalePicIdCounter = 0;
+                    return maleDrawables.get(13);
+            }
+            return 0;
+        } else {
+            switch (mFemPicIdCounter) {
+                case 0:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(0);
+                case 1:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(1);
+                case 2:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(2);
+                case 3:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(3);
+                case 4:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(4);
+                case 5:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(5);
+                case 6:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(6);
+                case 7:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(7);
+                case 8:
+                    mFemPicIdCounter++;
+                    return femDrawables.get(8);
+                case 9:
+                    mFemPicIdCounter = 0;
+                    return femDrawables.get(9);
+            }
+
+            return 0;
+        }
+    }
+
+    private void setPic(int id) {
+        mPerson.setImageResID(id);
+        mPersonIcon.setImageResource(id);
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnSaveButtonPersonFragmentInteractionListener) {
+            mSaveButtonListener = (OnSaveButtonPersonFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSaveButtonPersonFragmentInteractionListener");
         }
-        Log.d(TAG, "onAttach: ATTACHED");
+        Log.d(TAG, "Person Editor Fragment onAttach: ATTACHED");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-        Log.d(TAG, "onDetach: DETACHED");
+        mSaveButtonListener = null;
     }
 
     /**
@@ -382,13 +483,14 @@ public class PersonEditorFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Person person);
+    public interface OnSaveButtonPersonFragmentInteractionListener {
+        void onSaveButtonPersonEditorFragmentInteraction(Person person);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         Log.d(TAG, "onResume: RESUMED");
     }
 
@@ -396,5 +498,6 @@ public class PersonEditorFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: PAUSED");
+
     }
 }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">OmniaDeMe</string>
-    <string name="title_edit_person_nav">Myself</string>
-    <string name="title_facts_nav">About me</string>
+    <string name="nav_title_edit_person">Set profile</string>
+    <string name="nav_title_facts">About me</string>
+    <string name="nav_title_info">About</string>
     <string name="title_notifications">Notifications</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,9 +29,13 @@
 
     <string name="hair_fact_title">Hair through life</string>
     <string name="hair_fact_description">In your entire life your hair has grown </string>
+    <string name="hair_fact_pic_uri">https://www.clipartmax.com/png/middle/25-253405_breast-cancer-pink-hair-clip-art-at-clker-gift-certificate-template-hair.png</string>
     <string name="nails_fact_title">How long would my nails be?</string>
     <string name="nails_fact_description">Nails on the hands would grow</string>
+    <string name="nails_fact_pic_uri">https://www.clipartmax.com/png/middle/171-1715462_nails-logo.png</string>
     <string name="toes_fact_title">And on my feet?</string>
     <string name="toes_fact_description">You\'ve already grown</string>
+    <string name="toes_fact_pic_uri">https://www.clipartmax.com/png/middle/38-388229_foot-print-clip-art-purple-footprints-clipart.png</string>
     <string name="empty_person_warning_toast">Please fill marked fields</string>
+    <string name="instagram_url">http://instagram.com/allvays/</string>
 </resources>
