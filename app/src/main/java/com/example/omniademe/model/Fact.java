@@ -4,13 +4,15 @@ package com.example.omniademe.model;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.omniademe.R;
+
 import java.util.UUID;
 
 public class Fact {
     private UUID mUUID;
     private String mFactTitle;
     private String mDescription;
-    private String mFactPicUrl;
+    //private String mFactPicUrl;
     private int mFactPicResId;
 
     public Fact(Context context, int title, int description, int factPicResId, String TAG) {
@@ -36,6 +38,12 @@ public class Fact {
         }
 
     }
+    public Fact (Context context){
+        mUUID = UUID.randomUUID();
+        mFactTitle = context.getString(R.string.welcoming_title).concat(" ").concat(Person.getPerson().getName().concat("!"));
+        mDescription = context.getString(R.string.welcoming_description);
+        mFactPicResId = Person.getPerson().getImageResID();
+    }
 
 
     /**
@@ -53,9 +61,9 @@ public class Fact {
         return mDescription;
     }
 
-    public String getFactPicUrl() {
+    /*public String getFactPicUrl() {
         return mFactPicUrl;
-    }
+    }*/
 
     public int getFactResId() {
         return mFactPicResId;
